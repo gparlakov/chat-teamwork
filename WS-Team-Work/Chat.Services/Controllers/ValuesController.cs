@@ -1,5 +1,5 @@
 ﻿using Chat.Models;
-using Chat.Repositories;
+using Chat.Repository;
 using Chat.Services.Models;
 using System;
 using System.Collections.Generic;
