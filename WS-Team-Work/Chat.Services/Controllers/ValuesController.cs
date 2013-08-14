@@ -20,7 +20,7 @@ namespace Chat.Services.Controllers
         }
 
         // GET api/values
-        public IQueryable<Message> Get()
+        public IQueryable<MessageModel> Get()
         {
             var messages = this.messageRepository.All();
 

@@ -2,6 +2,7 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Chat.Repository;
 
 namespace Chat.Repository
 {
@@ -39,9 +40,13 @@ namespace Chat.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<Message> All()
+        public IQueryable<MessageModel> All()
         {
-            var messages = this.messageSet.AsQueryable();
+            var messages = this.messageSet.Select(m => new MessageModel             
+            {
+                Id = m.Id,
+                Content = m.Content
+            });
 
             return messages;
         }
