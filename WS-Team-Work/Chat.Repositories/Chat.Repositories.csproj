@@ -48,6 +48,8 @@
     <Compile Include="MessageModel.cs" />
     <Compile Include="MessageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerErrorException.cs" />
+    <Compile Include="UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

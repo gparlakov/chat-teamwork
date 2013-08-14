@@ -17,8 +17,14 @@ namespace Chat.Services
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        protected void ConfigureDependencyResolver(HttpConfiguration config)
+        {
+            config.DependencyResolver = new Resolvers.DependencyResolver();
+        }
+
         protected void Application_Start()
         {
+
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChatContext, Configuration>());
             using (var db = new ChatContext())
             {
@@ -31,6 +37,7 @@ namespace Chat.Services
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            this.ConfigureDependencyResolver(GlobalConfiguration.Configuration);
         }
     }
 }
