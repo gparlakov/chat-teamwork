@@ -20,9 +20,11 @@ namespace Chat.Services.Controllers
         }
 
         // GET api/values
-        public IEnumerable<string> Get()
+        public IQueryable<Message> Get()
         {
-            return new string[] { "value1", "value2" };
+            var messages = this.messageRepository.All();
+
+            return messages;
         }
 
         // GET api/values/5

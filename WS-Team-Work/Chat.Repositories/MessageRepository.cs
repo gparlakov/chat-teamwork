@@ -41,7 +41,9 @@ namespace Chat.Repository
 
         public IQueryable<Message> All()
         {
-            throw new NotImplementedException();
+            var messages = this.messageSet.AsQueryable();
+
+            return messages;
         }
     }
 }
