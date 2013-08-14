@@ -19,6 +19,12 @@ namespace Chat.Repository
 
         public Message Add(Message message)
         {
+            var userFrom = messageContext.Set<User>().FirstOrDefault(u => u.SessionKey == message.FromUser.SessionKey);
+            var userTo = messageContext.Set<User>().FirstOrDefault(u => u.Id == message.ToUser.Id);
+            
+            message.FromUser = userFrom;
+            message.ToUser = userTo;
+
             messageSet.Add(message);
             messageContext.SaveChanges();
 
@@ -42,7 +48,7 @@ namespace Chat.Repository
 
         public IQueryable<Message> All()
         {
-            var messages = this.messageSet.AsQueryable();
+            var messages = this.messageSet.Include("Users").AsQueryable();
 
             return messages;
         }

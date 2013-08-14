@@ -10,5 +10,7 @@ namespace Chat.Services.Models
         public string Content { get; set; }
 
         public int Id { get; set; }
+
+        public int FromUserId { get; set; }
     }
 }

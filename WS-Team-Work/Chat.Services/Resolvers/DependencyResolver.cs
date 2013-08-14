@@ -15,6 +15,8 @@ namespace Chat.Services.Resolvers
         private static DbContext chatContext = new ChatContext();
 
         private static IRepository<User> repository = new UserRepository(chatContext);
+        private static IRepository<Message> messageRepository = new MessageRepository(chatContext);
+
 
 
         public IDependencyScope BeginScope()
@@ -27,6 +29,10 @@ namespace Chat.Services.Resolvers
             if (serviceType == typeof(UsersController))
             {
                 return new UsersController(repository);
+            }
+            if (serviceType == typeof(MessagesController))
+            {
+                return new MessagesController(messageRepository);
             }
             else
             {
