@@ -1,5 +1,6 @@
 ﻿using Chat.Models;
 using Chat.Repository;
+using Chat.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,12 @@ namespace Chat.Services.Controllers
         // GET api/values
         public IQueryable<MessageModel> Get()
         {
-            var messages = this.messageRepository.All();
+            var messages = this.messageRepository.All()
+                .Select(m => new MessageModel 
+                {
+                    Id = m.Id,
+                    Content = m.Content
+                });
 
             return messages;
         }
