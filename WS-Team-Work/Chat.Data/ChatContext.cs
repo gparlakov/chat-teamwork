@@ -1,13 +1,22 @@
 ﻿using Chat.Models;
+using System.Data.Common;
 using System.Data.Entity;
 
 namespace Chat.Data
 {
     public class ChatContext : DbContext
     {
+        //public ChatContext()
+        //    : base("SQLSERVER_CONNECTION_STRING")
+        //{
+        //}
+
         public ChatContext()
-            : base("SQLSERVER_CONNECTION_STRING")
         {
+            var connectionString = 
+                System.Configuration.ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
+
+            this.Database.Connection.ConnectionString = connectionString;
         }
 
         public DbSet<Message> Messages { get; set; }
