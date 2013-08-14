@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Chat.Models;
+using Chat.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +11,14 @@ namespace Chat.Services.Controllers
 {
     public class ValuesController : ApiController
     {
+        private MessageRepository messageRepository;
+
+
+        public ValuesController()
+        {
+            this.messageRepository = new MessageRepository(new Chat.Data.ChatContext());
+        }
+
         // GET api/values
         public IEnumerable<string> Get()
         {
@@ -22,8 +32,9 @@ namespace Chat.Services.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Message newMessage)
         {
+            this.messageRepository.Add(newMessage);            
         }
 
         // PUT api/values/5

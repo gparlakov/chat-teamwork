@@ -296,6 +296,10 @@
       <Project>{48596bcc-adca-4303-9671-6165d98036ef}</Project>
       <Name>Chat.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chat.Repositories\Chat.Repositories.csproj">
+      <Project>{60c5839a-8f81-4bad-8eb0-861be8ade671}</Project>
+      <Name>Chat.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
