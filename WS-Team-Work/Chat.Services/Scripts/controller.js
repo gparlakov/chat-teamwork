@@ -7,7 +7,11 @@ var controllers = (function () {
 
     var updateTimer = null;
 
-    var rootUrl = "http://localhost:17097/api/";
+    var local = "http://localhost:17097/api/";
+    var remote = "http://chat-teamwork.apphb.com/api/";
+
+    var rootUrl = "http://chat-teamwork.apphb.com/api/";
+    
     var Controller = Class.create({
         init: function () {
             this.persister = persisters.get(rootUrl);
