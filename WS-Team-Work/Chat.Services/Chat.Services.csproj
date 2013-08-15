@@ -279,6 +279,7 @@
     <Content Include="Content\11178287-the-creation-of-adam.jpg" />
     <Content Include="Scripts\class.js" />
     <Content Include="Scripts\controller.js" />
+    <Content Include="Scripts\html5uploadr.js" />
     <Content Include="Scripts\http-requester.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

@@ -47,7 +47,8 @@
             '<div id="input">' +
                 '<input type="text" id="msg-text"/>' +
                 '<button id="message-send-button-new">Send</button>' +
-                '<button id="msg-file">Send File</button>' +
+                '<input id="file-send-button" type="file" />' +
+                //'<button id="file-send-button">Send File</button>' +
                 //'<button id="msg-history">History</button>' +
             '</div>';
         return html;
@@ -80,8 +81,13 @@
 
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
-            
-            messagesList += "<li class='message-from-other'>" + message.FromUserNickname +": " + message.Content + "</li>";
+            var content = message.Content;
+
+            if (content.indexOf("https://dl.dropboxusercontent.com") >= 0) {
+                content = "<a href ='" + content +"' >File - click to open</a>"
+            }
+
+            messagesList += "<li class='message-from-other'>" + message.FromUserNickname + ": " + content + "</li>";
         }
 
         messagesList += "</ul>";

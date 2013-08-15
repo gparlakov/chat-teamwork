@@ -165,6 +165,28 @@ var controllers = (function () {
                 //}, function (err) { alert(err.responseText); })
 
             });
+
+            $("#file-send-button").on("click", function (ev) {                                 
+                var messagesList = $("#messages-list");
+                if (messagesList.length === 0 ) {
+                    alert("No user to send to!");
+                    ev.preventDefault();
+                    return;
+                }
+
+                var sessionKey = localStorage["sessionKey"];
+                var id = messagesList.data("from-user-id");
+                var urlToSendFileTo = rootUrl + "messages/" + sessionKey + "/" + id;
+
+                $(this).html5Uploader({
+                    postUrl: urlToSendFileTo,
+                })
+                
+            });
+
+            //    html5Uploader({
+            //    postUrl: getUrl(),
+            //});
             
         },
         updateUI: function (selector) {
@@ -172,7 +194,6 @@ var controllers = (function () {
             this.loadUsers();
             this.loadChatMessages();
         },
-
         loadChatMessages: function(){
             var messagesList = $("#messages-list");
             if (messagesList.length > 0) {

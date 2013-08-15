@@ -38,9 +38,15 @@ namespace Chat.Services.Controllers
                 {
                     Id = m.Id,
                     Content = m.Content,
+                    FileUrl = m.FileUrl,
                     FromUserId = m.FromUser.Id,
                     FromUserNickname = m.FromUser.Nickname
                 }).ToList();
+
+            foreach (var message in allMessages)
+            {
+                message.Content = message.Content ?? message.FileUrl;
+            }
 
             return allMessages;
         }
@@ -82,14 +88,18 @@ namespace Chat.Services.Controllers
             {
                 string imageUrl = string.Empty;
 
-
                 var postedFile = httpRequest.Files[0];
 
                 imageUrl = DropboxUploader.DropboxShareFile(postedFile.InputStream, postedFile.FileName);
 
-                this.messageRepository.AddFileMessage(sessionKey, id, imageUrl);
+                var postedFileMessage = this.messageRepository.AddFileMessage(sessionKey, id, imageUrl);
 
                 result = Request.CreateResponse(HttpStatusCode.OK);
+
+                Notifiers.PubNubNotifier.PublishMessage(JsonConvert.SerializeObject(new {
+                    FromUser = postedFileMessage.FromUser.Nickname,
+                    ToUser = postedFileMessage.ToUser.Nickname                    
+                }));
             }
             else
             {

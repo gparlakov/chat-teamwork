@@ -101,6 +101,9 @@ var persisters = (function () {
             var url = this.rootUrl;
             data.fromUser = sessionKey;
             httpRequester.postJSON(url, data, success, error);
+        },
+        fileUpload: function () {
+
         }
     });
     return {
