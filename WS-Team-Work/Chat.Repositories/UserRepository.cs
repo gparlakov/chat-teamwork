@@ -34,11 +34,11 @@ namespace Chat.Repositories
             {
                 if (dbUser.Username == entity.Username)
                 {
-                    throw new ArgumentException("Username already exists");
+                    throw new ServerErrorException("Username already exists");
                 }
                 else
                 {
-                    throw new ArgumentException("Nickname already exists");
+                    throw new ServerErrorException("Nickname already exists");
                 }
             }
 
@@ -54,7 +54,7 @@ namespace Chat.Repositories
 
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("Username or Password Invalid","username/password");
             }
 
             this.Update(user.Id, user);
@@ -67,7 +67,7 @@ namespace Chat.Repositories
             var user = this.entitySet.FirstOrDefault(u => u.SessionKey == sessionKey);
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("User not found","sessionKey");
             }
 
             return (int)user.Id;
@@ -78,7 +78,7 @@ namespace Chat.Repositories
             var user = this.entitySet.FirstOrDefault(u => u.SessionKey == sessionKey);
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("Logout failed. User not logged or not found", "sessionKey");
             }
             user.SessionKey = null;
             context.SaveChanges();
@@ -98,7 +98,7 @@ namespace Chat.Repositories
             var user = this.entitySet.FirstOrDefault(u => u.SessionKey == sessionKey);
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("Updating User image failed.", "sessionKey");
             }
             user.ImageUrl = url;
 
@@ -108,9 +108,10 @@ namespace Chat.Repositories
         public void Delete(int id)
         {
             var user = this.entitySet.FirstOrDefault(u => u.Id == id);
+
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("Deleting User failed. User not found.", "id");
             }
 
             this.entitySet.Remove(user);
@@ -122,7 +123,7 @@ namespace Chat.Repositories
             var user = this.entitySet.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
-                throw new ServerErrorException();
+                throw new ServerErrorException("Getting user failed. User not found.", "id");
             }
 
             return user;
