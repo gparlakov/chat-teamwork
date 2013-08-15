@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://raw.github.com/MicheleBertoli/jquery-html5-uploader/master/jquery.html5uploader.js"></script>
+</head>
+    <body>         
+
+<form method="post" action="newteam.apphb.com/api/users/image">
+<input id="multiple" type="file" multiple />
+<input type="submit"/>
+</form>
+
+<script type="text/javascript">
+$(function() {
+	$("#multiple").html5Uploader({
+		name: "foo",
+		method: "POST",
+		postUrl: "http://localhost:17097/api/users/5VSKCgUsO43iooFPGfOzjk8bd946ymXb7VqdnZC1Ldrvh7RTth/image"
+	});
+});
+</script>
+    </body>
+</html>

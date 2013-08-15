@@ -4,9 +4,12 @@ using Chat.Repositories;
 using Chat.Repository;
 using Chat.Services.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
+using Chat.FileExtensions;
 using System.Web.Http;
 
 namespace Chat.Services.Controllers
@@ -45,6 +48,35 @@ namespace Chat.Services.Controllers
             this.repository.LogoutUser(sessionKey);
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [POST("api/users/{sessionKey}/image")]
+        public HttpResponseMessage PostProfileImage(string sessionKey)
+        {
+            HttpResponseMessage result = null;
+            var httpRequest = HttpContext.Current.Request;
+            if (httpRequest.Files.Count > 0)
+            {
+                string imageUrl = string.Empty;
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+
+                    // TODO CHECK IMG FILE TYPE
+                    imageUrl = DropboxUploader.DropboxShareFile(postedFile.InputStream, postedFile.FileName);
+                }
+                imageUrl = imageUrl.Substring(0, imageUrl.Length - 5);
+
+                this.repository.UpdateImageUrl(sessionKey, imageUrl);
+
+                result = Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            return result;
         }
 
         [POST("api/users/login")]

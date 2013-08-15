@@ -93,6 +93,18 @@ namespace Chat.Repositories
             return entity;
         }
 
+        public void UpdateImageUrl(string sessionKey, string url)
+        {
+            var user = this.entitySet.FirstOrDefault(u => u.SessionKey == sessionKey);
+            if (user == null)
+            {
+                throw new ServerErrorException();
+            }
+            user.ImageUrl = url;
+
+            context.SaveChanges();
+        }
+
         public void Delete(int id)
         {
             var user = this.entitySet.FirstOrDefault(u => u.Id == id);
