@@ -3,6 +3,7 @@ using Chat.Models;
 using Chat.Notifiers;
 using Chat.Repository;
 using Chat.Services.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,13 @@ namespace Chat.Services.Controllers
 
             this.messageRepository.Add(messageEntity);
 
-            PubNubNotifier.PublishMessage(message.Content);
+            var notification = new NotificationModel 
+            {
+                ToUser = messageEntity.FromUser.SessionKey,
+                FromUser = messageEntity.ToUser.Nickname
+            };
+
+            PubNubNotifier.PublishMessage(JsonConvert.SerializeObject(notification));
         }
 
         //// PUT api/messages/5

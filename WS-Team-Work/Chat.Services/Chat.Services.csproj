@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\MessagePostModel.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserModelLogged.cs" />
     <Compile Include="Models\UserModelLogin.cs" />
