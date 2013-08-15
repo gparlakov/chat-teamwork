@@ -323,6 +323,10 @@
       <Project>{48596bcc-adca-4303-9671-6165d98036ef}</Project>
       <Name>Chat.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chat.Notifiers\Chat.Notifiers.csproj">
+      <Project>{796459aa-e35e-4cac-91b0-bbbbfe916f3f}</Project>
+      <Name>Chat.Notifiers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chat.Repositories\Chat.Repositories.csproj">
       <Project>{60c5839a-8f81-4bad-8eb0-861be8ade671}</Project>
       <Name>Chat.Repositories</Name>

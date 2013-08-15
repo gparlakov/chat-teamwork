@@ -21,7 +21,7 @@ namespace Chat.Repository
         {
             var userFrom = messageContext.Set<User>().FirstOrDefault(u => u.SessionKey == message.FromUser.SessionKey);
             var userTo = messageContext.Set<User>().FirstOrDefault(u => u.Id == message.ToUser.Id);
-            
+
             message.FromUser = userFrom;
             message.ToUser = userTo;
 

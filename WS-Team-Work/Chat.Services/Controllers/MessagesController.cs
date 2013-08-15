@@ -1,5 +1,6 @@
 ﻿using AttributeRouting.Web.Http;
 using Chat.Models;
+using Chat.Notifiers;
 using Chat.Repository;
 using Chat.Services.Models;
 using System;
@@ -54,6 +55,8 @@ namespace Chat.Services.Controllers
             };
 
             this.messageRepository.Add(messageEntity);
+
+            PubNubNotifier.PublishMessage(message.Content);
         }
 
         //// PUT api/messages/5
