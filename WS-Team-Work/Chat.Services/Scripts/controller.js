@@ -32,7 +32,7 @@ var controllers = (function () {
                         var notification = "<li class='notification'>New message from " + message.fromUser + "</li>";
 
                         var notificationsAll = notifierWrapper.html();
-                        notificationsAll += notification;
+                        notificationsAll = notification + notificationsAll;
                         notifierWrapper.html(notificationsAll);
                     };                   
                 },
