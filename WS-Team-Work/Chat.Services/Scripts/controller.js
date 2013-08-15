@@ -6,6 +6,7 @@
 var controllers = (function () {
 
     var updateTimer = 10000;
+    var updateUiTimer = "";
 
     var local = "http://localhost:17097/api/";
     var remote = "http://chat-teamwork.apphb.com/api/";
@@ -60,7 +61,7 @@ var controllers = (function () {
 
             this.updateUI(selector);
 
-            setInterval(function () {
+            updateUiTimer = setInterval(function () {
                 self.updateUI(selector);
             }, updateTimer);
 
@@ -103,7 +104,7 @@ var controllers = (function () {
                     self.loadChatUI(selector);
                     self.loadUsers();
                 }, function (err) {
-                    var text = err.statusText;
+                    var text = "could not login - maybe wrong username/password " + err.statusText;
                     wrapper.find("#error-messages").text(text);
                 });
                 return false;
@@ -124,9 +125,11 @@ var controllers = (function () {
             });
 
             wrapper.on("click", "#btn-logout", function () {
+                
                 self.persister.user.logout(function () {
                     self.loadLoginFormUI(selector);
-                    clearInterval(updateTimer);
+                    clearInterval(updateUiTimer);
+                    updateUiTimer = "";
                 }, function (err) {
                 });
             });
@@ -158,18 +161,9 @@ var controllers = (function () {
                 }, function () {
                     inputText.val("").attr("placeholder", "Message NOT sent!");
                 });
-
-                //var userId = $(this).data("user-id");
-
-                //self.persister.message.all(function (messages) {
-                    
-
-
-                //}, function (err) { alert(err.responseText); })
-
             });
 
-            $("#file-send-button").on("click", function (ev) {                                 
+            wrapper.on("click", "#file-send-button", function (ev) {
                 var messagesList = $("#messages-list");
                 if (messagesList.length === 0 ) {
                     alert("No user to send to!");
@@ -187,7 +181,7 @@ var controllers = (function () {
                 
             });
 
-            $("#change-avatar").on("click", function (ev) {
+            wrapper.on("click", "#change-avatar", function (ev) {
                 
                 var sessionKey = localStorage["sessionKey"];
                 
@@ -207,9 +201,11 @@ var controllers = (function () {
                         
         },
         updateUI: function (selector) {
-            var self = this;
-            this.loadUsers();
-            this.loadChatMessages();
+            if (localStorage["sessionKey"]) {
+                var self = this;
+                this.loadUsers();
+                this.loadChatMessages();
+            }            
         },
         loadChatMessages: function(){
             var messagesList = $("#messages-list");
