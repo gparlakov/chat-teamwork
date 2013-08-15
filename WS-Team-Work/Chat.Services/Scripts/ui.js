@@ -31,7 +31,7 @@
     function buildChatUI(user) {
         var html = '<div id="header" class="clearfix">' +
                 '<div id="avatar" style="background-image: url(' + user.imageUrl + ');background-size:72px">' +
-                '</div>' +
+                '<input id="change-avatar" type="file" class="hidden-input-avatar-change" /></div>' +
                 '<span id="user-nickname">' + user.nick +
 		        '</span>' +
                 '<button id="btn-logout">Logout</button><br/>' +
@@ -47,26 +47,42 @@
             '<div id="input">' +
                 '<input type="text" id="msg-text"/>' +
                 '<button id="message-send-button-new">Send</button>' +
-                '<input id="file-send-button" type="file" />' +
-                //'<button id="file-send-button">Send File</button>' +
+                '<button id="file-send-button-holder"><div>Send File<input id="file-send-button" type="file" class="hidden-input-file" /></div></button>' +
                 //'<button id="msg-history">History</button>' +
             '</div>';
         return html;
     }
 
     function buildUserList(users) {
+        ///
+        var selected = $(".userSelected").data("user-id");
+        ///
+
         var list = '<ul id="users-sidebar" class="game-list open-games">';
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
-            list +=
-				'<li data-user-id="' + user.id + '">' +
-					//'<a href="#" >' +
-					//	$("<div />").html(game.title).text() +
-					//'</a>' +
-					//'<span> by ' +
-						user.nickname +
-					//'</span>' +
-				'</li>';
+            if (user.id === selected) {
+                list +=
+                '<li data-user-id="' + user.id + '"' + ' class="userSelected">' +
+                    //'<a href="#" >' +
+                    //	$("<div />").html(game.title).text() +
+                    //'</a>' +
+                    //'<span> by ' +
+                        user.nickname +
+                    //'</span>' +
+                '</li>';
+            }
+            else {
+                list +=
+                    '<li data-user-id="' + user.id + '">' +
+                        //'<a href="#" >' +
+                        //	$("<div />").html(game.title).text() +
+                        //'</a>' +
+                        //'<span> by ' +
+                            user.nickname +
+                        //'</span>' +
+                    '</li>';
+            }
         }
         list += "</ul>";
         return list;

@@ -10,7 +10,7 @@ var controllers = (function () {
     var local = "http://localhost:17097/api/";
     var remote = "http://chat-teamwork.apphb.com/api/";
 
-    var rootUrl = "http://chat-teamwork.apphb.com/api/";
+    var rootUrl = remote;
     
     var Controller = Class.create({
         persister:{},
@@ -137,7 +137,10 @@ var controllers = (function () {
                 self.persister.message.all(userId ,function (messages) {
                     ui.loadMessages(messages, userId);
                 }, function (err) { alert(err.responseText); })
-                
+                ////
+                wrapper.find(".userSelected").removeClass("userSelected");
+                $(this).addClass("userSelected");
+                ////   
             });
 
             wrapper.on("click", "#message-send-button-new", function (e) {
@@ -184,10 +187,24 @@ var controllers = (function () {
                 
             });
 
-            //    html5Uploader({
-            //    postUrl: getUrl(),
-            //});
-            
+            $("#change-avatar").on("click", function (ev) {
+                
+                var sessionKey = localStorage["sessionKey"];
+                
+                var urlToSendFileTo = rootUrl + "users/" + sessionKey + "/image";
+
+                $(this).html5Uploader({
+                    postUrl: urlToSendFileTo,
+                })
+
+                //var self = this;
+
+                setTimeout(function () {
+                    self.loadChatUI();
+                }, 3000)
+            });
+
+                        
         },
         updateUI: function (selector) {
             var self = this;
