@@ -3,7 +3,7 @@
     public class PubNubNotifier
     {
         private const string PublishKey = "pub-c-01a2bb9b-25f7-4385-8cd3-7c10036a6b06";
-        private const string SubscribeKey = "sub-c-484fa9d0-057c-11e3-991c-02ee2ddab7fe ";
+        private const string SubscribeKey = "sub-c-484fa9d0-057c-11e3-991c-02ee2ddab7fe";
         private const string SecretKey = "sec-c-NjljMTQ3OGItYWFjZC00MDVlLTgxMTEtNGRmMzFhMjE5YWJi";
         private const bool Ssl = true;
 

@@ -27,7 +27,7 @@ namespace Chat.Data
             //Users
             modelBuilder.Entity<User>().HasKey(x => x.Id);
             modelBuilder.Entity<User>().Property(x => x.Username).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<User>().Property(x => x.Password).IsRequired().HasMaxLength(16);
+            modelBuilder.Entity<User>().Property(x => x.Password).IsRequired().HasMaxLength(150);
             modelBuilder.Entity<User>().Property(x => x.Nickname).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<User>().Property(x => x.SessionKey).HasMaxLength(50);
 
