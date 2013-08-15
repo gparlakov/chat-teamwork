@@ -58,13 +58,16 @@ namespace Chat.Services.Controllers
             if (httpRequest.Files.Count > 0)
             {
                 string imageUrl = string.Empty;
-                foreach (string file in httpRequest.Files)
-                {
-                    var postedFile = httpRequest.Files[file];
 
-                    // TODO CHECK IMG FILE TYPE
-                    imageUrl = DropboxUploader.DropboxShareFile(postedFile.InputStream, postedFile.FileName);
+                var postedFile = httpRequest.Files[0];
+
+                if (!ImageValidator.CheckImageFormat(postedFile.FileName))
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
+
+                imageUrl = DropboxUploader.DropboxShareFile(postedFile.InputStream, postedFile.FileName);
+
                 imageUrl = imageUrl.Substring(0, imageUrl.Length - 5);
 
                 this.repository.UpdateImageUrl(sessionKey, imageUrl);
