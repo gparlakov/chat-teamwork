@@ -9,15 +9,14 @@ namespace Chat.FileExtensions
     public static class ImageValidator
     {
         static string[] allowedImgageFormat = new string[] {
-                "jpg","jpeg", "img", "gif", "ico", "JPEG", "JFIF", "Exif", 
+                "JPG","JPEG", "IMG", "GIF", "ICO", "JFIF", "Exif", 
                 "TIFF", "RAW", "GIF", "BMP", "PNG", "PPM", "PGM", "PBM", 
                 "PNM", "PFM", "PAM", "WEBP"};
 
         public static bool CheckImageFormat(string file)
         {
             string[] gettingTheFormat = file.Split(new char[] { '.' });
-            string fileFormat = gettingTheFormat[gettingTheFormat.Length - 1];
-
+            string fileFormat = gettingTheFormat[gettingTheFormat.Length - 1].ToUpper();
 
             foreach (var format in allowedImgageFormat)
             {
