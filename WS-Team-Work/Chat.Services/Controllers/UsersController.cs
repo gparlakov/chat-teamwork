@@ -14,6 +14,7 @@ namespace Chat.Services.Controllers
     public class UsersController : ApiController
     {
         private UserRepository repository;
+        private const string imgUrl = "https://photos-6.dropbox.com/t/0/AAAiaVqCTjT35zhFfVe3_YDhN_rd_ctRFOtTndQe0opTsA/12/202687633/jpeg/32x32/3/_/1/2/default_person_large.jpg/3NzyN8V0s7ll7aLaKVUrWNcpfHYKYBv3lwpcLrnAPDY?size=1024x768";
 
         public UsersController(IRepository<User> repo)
         {
@@ -60,7 +61,8 @@ namespace Chat.Services.Controllers
             var loggedUser = new UserModelLogged()
             {
                 Nickname = userLog.Nickname,
-                SessionKey = userLog.SessionKey
+                SessionKey = userLog.SessionKey,
+                ImageUrl = userLog.ImageUrl
             };
 
 
@@ -74,8 +76,8 @@ namespace Chat.Services.Controllers
             {
                 Username = user.Username,
                 Password = user.Password,
-                Nickname = user.Nickname
-                
+                Nickname = user.Nickname,
+                ImageUrl = imgUrl
             };
 
             var userReg = this.repository.Add(userFull);
@@ -84,84 +86,11 @@ namespace Chat.Services.Controllers
             var loggedUser = new UserModelLogged()
             {
                 Nickname = userLog.Nickname,
-                SessionKey = userLog.SessionKey
+                SessionKey = userLog.SessionKey,
+                ImageUrl = userLog.ImageUrl
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, loggedUser);
         }
-
-        //// PUT api/Users/5
-        //public HttpResponseMessage PutUser(int id, User user)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-        //    }
-
-        //    if (id != user.Id)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //    }
-
-        //    db.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
-        //    }
-
-        //    return Request.CreateResponse(HttpStatusCode.OK);
-        //}
-
-        //// POST api/Users
-        //public HttpResponseMessage PostUser(User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Users.Add(user);
-        //        db.SaveChanges();
-
-        //        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, user);
-        //        response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = user.Id }));
-        //        return response;
-        //    }
-        //    else
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-        //    }
-        //}
-
-        //// DELETE api/Users/5
-        //public HttpResponseMessage DeleteUser(int id)
-        //{
-        //    User user = db.Users.Find(id);
-        //    if (user == null)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.NotFound);
-        //    }
-
-        //    db.Users.Remove(user);
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
-        //    }
-
-        //    return Request.CreateResponse(HttpStatusCode.OK, user);
-        //}
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    db.Dispose();
-        //    base.Dispose(disposing);
-        //}
     }
 }

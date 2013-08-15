@@ -13,5 +13,7 @@ namespace Chat.Services.Models
         public string Nickname { get; set; }
         [DataMember(Name = "sessionKey")]
         public string SessionKey { get; set; }
+        [DataMember(Name = "imageUrl")]
+        public string ImageUrl { get; set; }
     }
 }
