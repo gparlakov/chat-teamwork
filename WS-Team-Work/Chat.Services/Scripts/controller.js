@@ -60,7 +60,7 @@ var controllers = (function () {
 
             this.updateUI(selector);
 
-            updateTimer = setInterval(function () {
+            setInterval(function () {
                 self.updateUI(selector);
             }, updateTimer);
 
