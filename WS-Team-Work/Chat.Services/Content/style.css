@@ -45,6 +45,12 @@
             background-color: #ccc;
             margin:15px;
         }
+button {
+    width:80px;
+    height:30px;
+    margin:10px;
+    font-size:12px;
+}
 #content {
     width:80%;
     margin:auto;
@@ -60,7 +66,7 @@
     width:70px;
     height:70px;
     border:1px solid black;
-float:left;
+    float:left;
 }
 #user-nickname {
     float:left;
@@ -86,6 +92,7 @@ float:left;
     border:1px solid black;
     float:left;
     background-color:rgba(255, 255, 255, .5);
+    overflow-y: scroll;
 }
 #user-list {
     width:14%;
@@ -93,13 +100,15 @@ float:left;
     border:1px solid black;
     float:left;
 }
-#user-list>ul {
+ul {
     list-style-type:none;
     padding:0;
+}
+#user-list>ul {
     text-align:left;
 }
 #user-list>ul>li {
-    margin:5px;
+    margin:5px 5px 10px 15px;
 }
 #input {
     border:1px solid black;
@@ -108,4 +117,10 @@ float:left;
 #msg-text {
     width:70%;
     float:left;
+    height:30px;
+    margin:10px 10px 10px 0;
+}
+
+.message-from-other {
+    list-style-type:none;
 }

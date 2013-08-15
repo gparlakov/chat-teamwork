@@ -4,22 +4,24 @@
 var persisters = (function () {
     var nickname = localStorage.getItem("nickname");
     var sessionKey = localStorage.getItem("sessionKey");
-    var avatar = localStorage.getItem("avatar");
+    var imageUrl = localStorage.getItem("imageUrl");
+
     function saveUserData(userData) {
         localStorage.setItem("nickname", userData.nickname);
         localStorage.setItem("sessionKey", userData.sessionKey);
-        localStorage.setItem("avatar", userData.avatar)
+        localStorage.setItem("imageUrl", userData.imageUrl)
         nickname = userData.nickname;
         sessionKey = userData.sessionKey;
-        avatar = userData.avatar;
+        imageUrl = userData.imageUrl;
     }
+
     function clearUserData() {
         localStorage.removeItem("nickname");
         localStorage.removeItem("sessionKey");
-        localStorage.removeItem("avatar");
+        localStorage.removeItem("imageUrl");
         nickname = "";
         sessionKey = "";
-        avatar = "";
+        imageUrl = "";
     }
 
     var MainPersister = Class.create({
@@ -35,7 +37,7 @@ var persisters = (function () {
         nickname: function () {
             var user = {
                 nick: nickname,
-                avatar: avatar
+                imageUrl: imageUrl
             }
             return user;
         }
@@ -91,9 +93,14 @@ var persisters = (function () {
             var url = this.rootUrl + "unread/" + sessionKey;
             httpRequester.getJSON(url, success, error);
         },
-        all: function (success, error) {
-            var url = this.rootUrl + "all/" + sessionKey;
+        all: function (userId,success, error) {
+            var url = this.rootUrl + sessionKey +"/idOfSender/" + userId;
             httpRequester.getJSON(url, success, error);
+        },
+        send: function (data, success, error) {
+            var url = this.rootUrl;
+            data.fromUser = sessionKey;
+            httpRequester.postJSON(url, data, success, error);
         }
     });
     return {

@@ -12,13 +12,11 @@ namespace Chat.Services.Resolvers
 {
     public class DependencyResolver: IDependencyResolver
     {
-        private static DbContext chatContext = new ChatContext();
+        //private static DbContext chatContext = new ChatContext();
 
-        private static IRepository<User> repository = new UserRepository(chatContext);
-        private static IRepository<Message> messageRepository = new MessageRepository(chatContext);
-
-
-
+        //private static IRepository<User> repository = new UserRepository(chatContext);
+        //private static IRepository<Message> messageRepository = new MessageRepository(chatContext);
+        
         public IDependencyScope BeginScope()
         {
             return this;
@@ -28,11 +26,11 @@ namespace Chat.Services.Resolvers
         {
             if (serviceType == typeof(UsersController))
             {
-                return new UsersController(repository);
+                return new UsersController(new UserRepository(new ChatContext()));
             }
             if (serviceType == typeof(MessagesController))
             {
-                return new MessagesController(messageRepository);
+                return new MessagesController(new MessageRepository(new ChatContext()));
             }
             else
             {

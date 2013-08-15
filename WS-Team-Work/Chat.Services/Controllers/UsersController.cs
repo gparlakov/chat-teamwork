@@ -17,7 +17,7 @@ namespace Chat.Services.Controllers
     public class UsersController : ApiController
     {
         private UserRepository repository;
-        private const string imgUrl = "https://photos-6.dropbox.com/t/0/AAAiaVqCTjT35zhFfVe3_YDhN_rd_ctRFOtTndQe0opTsA/12/202687633/jpeg/32x32/3/_/1/2/default_person_large.jpg/3NzyN8V0s7ll7aLaKVUrWNcpfHYKYBv3lwpcLrnAPDY?size=1024x768";
+        private const string imgUrl = "https://www.dropbox.com/s/bbr08j0u7iuhxvp/default_person_large.jpg?dl=1";
 
         public UsersController(IRepository<User> repo)
         {
@@ -97,7 +97,7 @@ namespace Chat.Services.Controllers
             {
                 Nickname = userLog.Nickname,
                 SessionKey = userLog.SessionKey,
-                ImageUrl = userLog.ImageUrl
+                ImageUrl = userLog.ImageUrl ?? imgUrl
             };
 
 

@@ -5,7 +5,7 @@
 
 var controllers = (function () {
 
-    var updateTimer = null;
+    var updateTimer = 10000;
 
     var local = "http://localhost:17097/api/";
     var remote = "http://chat-teamwork.apphb.com/api/";
@@ -13,8 +13,31 @@ var controllers = (function () {
     var rootUrl = "http://chat-teamwork.apphb.com/api/";
     
     var Controller = Class.create({
+        persister:{},
         init: function () {
-            this.persister = persisters.get(rootUrl);
+            this.persister = persisters.get(rootUrl);            
+        },
+        initNotifier: function () {
+            var notifier = PUBNUB.init({
+                subscribe_key: 'sub-c-484fa9d0-057c-11e3-991c-02ee2ddab7fe',
+                publish_key: 'pub-c-01a2bb9b-25f7-4385-8cd3-7c10036a6b06'
+            });
+            var notifierWrapper = $("#notification-list");
+            
+            notifier.subscribe({
+                channel: "chat-michelangelo-channel",
+                message: function (m) {
+                    var message = JSON.parse(m);
+                    if (message.toUser == localStorage["nickname"]) {
+                        var notification = "<li class='notification'>New message from " + message.fromUser + "</li>";
+
+                        var notificationsAll = notifierWrapper.html();
+                        notificationsAll += notification;
+                        notifierWrapper.html(notificationsAll);
+                    };                   
+                },
+                //connect: publish
+            })
         },
         loadUI: function (selector) {
             if (this.persister.isUserLoggedIn()) {
@@ -23,7 +46,7 @@ var controllers = (function () {
             else {
                 this.loadLoginFormUI(selector);
             }
-            this.attachUIEventHandlers(selector);
+            this.attachUIEventHandlers(selector);            
         },
         loadLoginFormUI: function (selector) {
             var loginFormHtml = ui.loginForm()
@@ -39,7 +62,9 @@ var controllers = (function () {
 
             updateTimer = setInterval(function () {
                 self.updateUI(selector);
-            }, 15000);
+            }, updateTimer);
+
+            this.initNotifier();
         },
         loadUsers: function () {
             this.persister.user.getAll(function (users) {
@@ -83,6 +108,7 @@ var controllers = (function () {
                 });
                 return false;
             });
+
             wrapper.on("click", "#btn-register", function () {
                 var user = {
                     username: $(selector).find("#tb-register-username").val(),
@@ -96,6 +122,7 @@ var controllers = (function () {
                 });
                 return false;
             });
+
             wrapper.on("click", "#btn-logout", function () {
                 self.persister.user.logout(function () {
                     self.loadLoginFormUI(selector);
@@ -103,29 +130,59 @@ var controllers = (function () {
                 }, function (err) {
                 });
             });
+
             wrapper.on("click", "#users-sidebar > li", function (e) {
-                var userId = $(this).data("id");
-                //self.
+                var userId = $(this).data("user-id");
+                
+                self.persister.message.all(userId ,function (messages) {
+                    ui.loadMessages(messages, userId);
+                }, function (err) { alert(err.responseText); })
+                
             });
 
+            wrapper.on("click", "#message-send-button-new", function (e) {
+                var data = {};
+
+                var messagesList = $("#messages-list");
+                data.toUser = messagesList.data("from-user-id");
+
+                var inputText = $("#msg-text")
+                data.content = inputText.val();
+
+                self.persister.message.send(data, function () {
+                    inputText.val("").attr("placeholder", "Message sent!");
+                    $("#messages")
+                }, function () {
+                    inputText.val("").attr("placeholder", "Message NOT sent!");
+                });
+
+                //var userId = $(this).data("user-id");
+
+                //self.persister.message.all(function (messages) {
+                    
+
+
+                //}, function (err) { alert(err.responseText); })
+
+            });
+            
         },
         updateUI: function (selector) {
+            var self = this;
             this.loadUsers();
+            this.loadChatMessages();
+        },
 
-            //this.persister.game.open(function (games) {
-            //    var list = ui.userList(games);
-            //    $(selector + " #open-games")
-            //		.html(list);
-            //});
-            //this.persister.game.myActive(function (games) {
-            //    var list = ui.activeGamesList(games);
-            //    $(selector + " #active-games")
-            //		.html(list);
-            //});
-            //this.persister.message.all(function (msg) {
-            //    var msgList = ui.messagesList(msg);
-            //    $(selector + " #messages-holder").html(msgList);
-            //});
+        loadChatMessages: function(){
+            var messagesList = $("#messages-list");
+            if (messagesList.length > 0) {
+                var userChatWithId = messagesList.data("from-user-id");
+
+                this.persister.message.all(userChatWithId, function (messages) {
+                    ui.loadMessages(messages, userChatWithId);
+                }, function (err) { alert(err.responseText); })
+
+            }
         }
     });
     return {

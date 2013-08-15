@@ -1,4 +1,5 @@
 ﻿using AttributeRouting.Web.Http;
+using Chat.FileExtensions;
 using Chat.Models;
 using Chat.Notifiers;
 using Chat.Repository;
@@ -9,13 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace Chat.Services.Controllers
 {
     public class MessagesController : ApiController
     {
-        private Repository.IRepository<Chat.Models.Message> messageRepository;
+        private MessageRepository messageRepository;
 
         public MessagesController(Repository.IRepository<Chat.Models.Message> messageRepository)
         {
@@ -24,16 +26,20 @@ namespace Chat.Services.Controllers
         }
         
         // GET api/messages
-        [GET("api/messages/{sessionKey}")]
-        public IEnumerable<MessageModel> Get([FromUri]string sessionKey)
+        [GET("api/messages/{sessionKey}/idOfSender/{idOfSender}")]
+        public IEnumerable<MessageModel> Get([FromUri]string sessionKey, [FromUri]string idOfSender)
         {
+            var senderId = int.Parse(idOfSender);
+
             var allMessages = this.messageRepository.All()
-                .Where(m => m.ToUser.SessionKey == sessionKey && m.FromUser.SessionKey != null)
+                .Where(m => m.ToUser.SessionKey == sessionKey && m.FromUser.Id == senderId || 
+                    m.FromUser.SessionKey == sessionKey && m.ToUser.Id == senderId)
                 .Select(m => new MessageModel
                 {
                     Id = m.Id,
                     Content = m.Content,
-                    FromUserId = m.FromUser.Id
+                    FromUserId = m.FromUser.Id,
+                    FromUserNickname = m.FromUser.Nickname
                 }).ToList();
 
             return allMessages;
@@ -59,21 +65,38 @@ namespace Chat.Services.Controllers
 
             var notification = new NotificationModel 
             {
-                ToUser = messageEntity.FromUser.SessionKey,
-                FromUser = messageEntity.ToUser.Nickname
+                ToUser = messageEntity.ToUser.Nickname,
+                FromUser = messageEntity.FromUser.Nickname
             };
 
             PubNubNotifier.PublishMessage(JsonConvert.SerializeObject(notification));
         }
 
-        //// PUT api/messages/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        [POST("api/messages/{sessionKey}/{id}")]
+        public HttpResponseMessage PostFiles(string sessionKey, int id)
+        {
+            HttpResponseMessage result = null;
+            var httpRequest = HttpContext.Current.Request;
 
-        //// DELETE api/messages/5
-        //public void Delete(int id)
-        //{
-        //}
+            if (httpRequest.Files.Count > 0)
+            {
+                string imageUrl = string.Empty;
+
+
+                var postedFile = httpRequest.Files[0];
+
+                imageUrl = DropboxUploader.DropboxShareFile(postedFile.InputStream, postedFile.FileName);
+
+                this.messageRepository.AddFileMessage(sessionKey, id, imageUrl);
+
+                result = Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            return result;
+        }
     }
 }

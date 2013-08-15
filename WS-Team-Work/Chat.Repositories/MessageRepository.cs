@@ -52,5 +52,28 @@ namespace Chat.Repository
 
             return messages;
         }
+
+        public Message AddFileMessage(string sessionKey, int id, string url)
+        {
+            var fromUser = messageContext.Set<User>().Where(u => u.SessionKey == sessionKey).FirstOrDefault();
+            var toUser = messageContext.Set<User>().Where(u => u.Id == id).FirstOrDefault();
+
+            if (fromUser == null || toUser == null)
+            {
+                throw new ServerErrorException("Username or Password Invalid", "username/password");
+            }
+
+            Message msg = new Message()
+            {
+                FromUser = fromUser,
+                ToUser = toUser,
+                FileUrl = url
+            };
+
+            this.messageSet.Add(msg);
+            this.messageContext.SaveChanges();
+
+            return msg;
+        }
     }
 }
