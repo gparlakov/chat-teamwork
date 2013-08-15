@@ -290,6 +290,7 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Content\style.css" />
+    <Content Include="Scripts\persister.js" />
     <Content Include="Scripts\persisters.js" />
     <Content Include="Scripts\ui.js" />
     <Content Include="Web.config">

@@ -27,9 +27,9 @@ var controllers = (function () {
         },
         loadChatUI: function (selector) {
             var self = this;
-            var gameUIHtml =
-				ui.gameUI(this.persister.nickname());
-            $(selector).html(gameUIHtml);
+            var chatUIHtml =
+				ui.chatUI(this.persister.nickname());
+            $(selector).html(chatUIHtml);
 
             this.updateUI(selector);
 
@@ -37,10 +37,15 @@ var controllers = (function () {
                 self.updateUI(selector);
             }, 15000);
         },
-        loadGame: function (selector, gameId) {
-            this.persister.game.state(gameId, function (gameState) {
-                var gameHtml = ui.gameState(gameState);
-                $(selector + " #game-holder").html(gameHtml)
+        loadUsers: function () {
+            this.persister.user.getAll(function (users) {
+                var usersListHtml = ui.userList(users);
+                $("#user-list").html(usersListHtml);
+                //var gameHtml = ui.gameState(gameState);
+                //$(selector + " #game-holder").html(gameHtml)
+            }, function (err) {
+                var text = err.statusText;
+                alert(text);
             });
         },
         attachUIEventHandlers: function (selector) {
@@ -59,7 +64,6 @@ var controllers = (function () {
                 wrapper.find("#register-form").show();
                 wrapper.find("#login-form").hide();
             });
-
             wrapper.on("click", "#btn-login", function () {
                 var user = {
                     username: $(selector + " #tb-login-username").val(),
@@ -68,8 +72,10 @@ var controllers = (function () {
 
                 self.persister.user.login(user, function () {
                     self.loadChatUI(selector);
+                    self.loadUsers();
                 }, function (err) {
-                    wrapper.find("#error-messages").text("Bla");
+                    var text = err.statusText;
+                    wrapper.find("#error-messages").text(text);
                 });
                 return false;
             });
@@ -93,18 +99,25 @@ var controllers = (function () {
                 }, function (err) {
                 });
             });
+            wrapper.on("click", "#users-sidebar > li", function (e) {
+                var userId = $(this).data("id");
+                //self.
+            });
+
         },
         updateUI: function (selector) {
-            this.persister.game.open(function (games) {
-                var list = ui.userList(games);
-                $(selector + " #open-games")
-					.html(list);
-            });
-            this.persister.game.myActive(function (games) {
-                var list = ui.activeGamesList(games);
-                $(selector + " #active-games")
-					.html(list);
-            });
+            this.loadUsers();
+
+            //this.persister.game.open(function (games) {
+            //    var list = ui.userList(games);
+            //    $(selector + " #open-games")
+            //		.html(list);
+            //});
+            //this.persister.game.myActive(function (games) {
+            //    var list = ui.activeGamesList(games);
+            //    $(selector + " #active-games")
+            //		.html(list);
+            //});
             //this.persister.message.all(function (msg) {
             //    var msgList = ui.messagesList(msg);
             //    $(selector + " #messages-holder").html(msgList);

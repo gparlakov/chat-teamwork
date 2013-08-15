@@ -28,44 +28,51 @@
         return html;
     }
 
-    function buildChatUI(nickname) {
-        var html = '<span id="user-nickname">' +
-				nickname +
-		'</span>' +
-		'<button id="btn-logout">Logout</button><br/>' +
-		'<div id="create-game-holder">' +
-			'Title: <input type="text" id="tb-create-title" />' +
-			'Password: <input type="text" id="tb-create-pass" />' +
-			'Number: <input type="text" id="tb-create-number" />' +
-			'<button id="btn-create-game">Create</button>' +
-		'</div>' +
-		'<div id="open-games-container">' +
-			'<h2>Open</h2>' +
-			'<div id="open-games"></div>' +
-		'</div>' +
-		'<div id="active-games-container">' +
-			'<h2>Active</h2>' +
-			'<div id="active-games"></div>' +
-		'</div>' +
-		'<div id="game-holder">' +
-		'</div>' +
-		'<div id="messages-holder">' +
-		'</div>';
+    function buildChatUI(user) {
+        var html = '<div id="header" class="clearfix">' +
+                '<div id="avatar" style="background-image: url(' + user.avatar + ')">' +
+                '</div>' +
+                '<span id="user-nickname">' + user.nick +
+		        '</span>' +
+                '<button id="btn-logout">Logout</button><br/>' +
+            '</div>' +
+            '<div id="chat-content" class="clearfix">' +
+                '<div id="notification">' +
+                '</div>' +
+                '<div id="msg-content">' +
+                '</div>' +
+                '<div id="user-list">' +
+                    //'<ul>'+
+                    //    '<li>'+
+                    //        'Mimi'+
+                    //    '</li>'+
+                    //    '<li>'+
+                    //        'Pesho'+
+                    //    '</li>'+
+                    //'</ul>'+
+                '</div>' +
+            '</div>' +
+            '<div id="input">' +
+                '<input type="text" id="msg-text"/>' +
+                '<button id="msg-send">Send</button>' +
+                '<button id="msg-file">Browse</button>' +
+                '<button id="msg-history">History</button>' +
+            '</div>';
         return html;
     }
 
-    function buildUserList(games) {
-        var list = '<ul class="game-list open-games">';
-        for (var i = 0; i < games.length; i++) {
-            var game = games[i];
+    function buildUserList(users) {
+        var list = '<ul id="users-sidebar" class="game-list open-games">';
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
             list +=
-				'<li data-game-id="' + game.id + '">' +
-					'<a href="#" >' +
-						$("<div />").html(game.title).text() +
-					'</a>' +
-					'<span> by ' +
-						game.creatorNickname +
-					'</span>' +
+				'<li data-user-id="' + user.id + '">' +
+					//'<a href="#" >' +
+					//	$("<div />").html(game.title).text() +
+					//'</a>' +
+					//'<span> by ' +
+						user.nickname +
+					//'</span>' +
 				'</li>';
         }
         list += "</ul>";

@@ -1,4 +1,13 @@
-﻿#wrapper {
+﻿.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+#wrapper {
             width: 70%;
             margin: auto;
             height:700px;
@@ -36,7 +45,67 @@
             background-color: #ccc;
             margin:15px;
         }
+#content {
+    width:80%;
+    margin:auto;
+}
 #tb-user {
     margin:10px;
 }
-        
+
+#header {
+    border:1px solid black;
+}
+#avatar {
+    width:70px;
+    height:70px;
+    border:1px solid black;
+float:left;
+}
+#user-nickname {
+    float:left;
+    margin-left:10px;
+    margin-top:40px;
+}
+#btn-logout {
+    margin-top:40px;
+    float:right;
+}
+#chat-content {
+        margin-top:10px;
+}
+#notification {
+    height:400px;
+    border:1px solid black;
+    float:left;
+    width:15%;
+}
+#msg-content {
+    width:70%;
+    height:400px;
+    border:1px solid black;
+    float:left;
+    background-color:rgba(255, 255, 255, .5);
+}
+#user-list {
+    width:14%;
+    height:400px;
+    border:1px solid black;
+    float:left;
+}
+#user-list>ul {
+    list-style-type:none;
+    padding:0;
+    text-align:left;
+}
+#user-list>ul>li {
+    margin:5px;
+}
+#input {
+    border:1px solid black;
+    margin-top:10px;
+}
+#msg-text {
+    width:70%;
+    float:left;
+}
